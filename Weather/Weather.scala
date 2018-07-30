@@ -1,5 +1,4 @@
 import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.SparkContext._
 import org.apache.spark.SparkContext
 
 object Weather {
@@ -21,7 +20,7 @@ object Weather {
       if (args.length < 2) {
         sparkConf.setMaster("local[6]")
         sparkConf.setAppName("Inverted Index").set("spark.executor.memory", "2g")
-        logFile = "/home/ali/work/temp/git/bigsift/src/benchmarks/histogrammovies/data/file1s.data"
+        logFile = "C:/Users/19230/Downloads/weather-00000"
       } else {
 
         logFile = args(0)
@@ -66,17 +65,17 @@ object Weather {
       val deltaSnow = split.groupByKey().map{ s  =>
         val delta =  s._2.max - s._2.min
         (s._1 , delta)
-      }.filter(s => WeatherAnalysis.failure(s._2))
+      }.filter(s => failure(s._2))
       val output = deltaSnow.collect
 
       /** ************************
         * Time Logging
         * *************************/
-      println(">>>>>>>>>>>>>  First Job Done  <<<<<<<<<<<<<<<")
-      val jobEndTimestamp = new java.sql.Timestamp(Calendar.getInstance.getTime.getTime)
-      val jobEndTime = System.nanoTime()
-      logger.log(Level.INFO, "JOb ends at " + jobEndTimestamp)
-      logger.log(Level.INFO, "JOb span at " + (jobEndTime - jobStartTime) / 1000 + "milliseconds")
+//      println(">>>>>>>>>>>>>  First Job Done  <<<<<<<<<<<<<<<")
+//      val jobEndTimestamp = new java.sql.Timestamp(Calendar.getInstance.getTime.getTime)
+//      val jobEndTime = System.nanoTime()
+//      logger.log(Level.INFO, "JOb ends at " + jobEndTimestamp)
+//      logger.log(Level.INFO, "JOb span at " + (jobEndTime - jobStartTime) / 1000 + "milliseconds")
 
       /** ************************
         * Time Logging
