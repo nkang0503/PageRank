@@ -1,6 +1,4 @@
-// adopted from BigSift Benchmarks
 import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.SparkContext._
 import org.apache.spark.SparkContext
 
 object Main {
@@ -22,7 +20,7 @@ object Main {
       if (args.length < 2) {
         sparkConf.setMaster("local[6]")
         sparkConf.setAppName("TermVector_LineageDD").set("spark.executor.memory", "2g")
-        logFile =  "C:/Users/19230/Downloads/wiki_50G_part-00000"
+        logFile =  "C:/Users/19230/Downloads/wiki_file100096k"
       } else {
         logFile = args(0)
         local = args(1).toInt
@@ -44,7 +42,7 @@ object Main {
       val lines = ctx.textFile(logFile, 5)
 
       val sequence = lines.filter(s => filterSym(s)).flatMap(s => {
-        s.split(" ").map(w => addFault(s, w))
+        s.split(" ").map(w => returnTuple(s, w))
       }).reduceByKey(_ + _)//.filter(s => failure(s))
 
       /** Annotating bugs on cluster **/
@@ -102,7 +100,8 @@ object Main {
     return true;
   }
 
-  def addFault(str: String, key: String): Tuple2[String, Int] = {
+  def returnTuple(str: String, key: String): Tuple2[String, Int] = {
+      Thread.sleep(5000)
       return Tuple2(key, 1)
   }
 }
