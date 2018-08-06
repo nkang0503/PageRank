@@ -1,7 +1,7 @@
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.SparkContext
 
-object Main {
+object WordCount {
   def main(args: Array[String]): Unit = {
     try {
       //set up logging
