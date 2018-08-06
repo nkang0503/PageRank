@@ -68,6 +68,8 @@ object Weather {
         (s._1 , delta)
       }.filter(s => addSleep(s._2))
       val output = deltaSnow.collect
+    
+      //outputting...
       //deltaSnow.saveAsTextFile("output.txt");
       /*
       for(each <- output) {
