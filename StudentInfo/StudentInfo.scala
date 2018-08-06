@@ -32,7 +32,7 @@ object StudentInfor {
     if(args.length < 2){
       sparkConf.setAppName("Student_Info")
         .set("spark.executor.memory", "2g").setMaster("local[6]")
-      logFile = "/home/ali/work/temp/git/bigsift/src/benchmarks/studentdataanalysis/datageneration/studentData.txt"
+      logFile = "studentData.txt"
     }else{
       logFile = args(0)
       local  = args(1).toInt
