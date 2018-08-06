@@ -1,9 +1,12 @@
+// Modified from the original BigSift Benchmarks
+
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.SparkContext
+import java.io.File
+import java.io.PrintWriter
 
 object Weather {
   def main(args: Array[String]) {
-    try {
       //set up logging
 //      val lm: LogManager = LogManager.getLogManager
 //      val logger: Logger = Logger.getLogger(getClass.getName)
@@ -20,12 +23,10 @@ object Weather {
       if (args.length < 2) {
         sparkConf.setMaster("local[6]")
         sparkConf.setAppName("Inverted Index").set("spark.executor.memory", "2g")
-        logFile = "C:/Users/19230/Downloads/weather-00000"
+        logFile = "weather-00000"
       } else {
-
         logFile = args(0)
         local = args(1).toInt
-
       }
       //set up lineage
 //      var lineage = true
@@ -65,9 +66,23 @@ object Weather {
       val deltaSnow = split.groupByKey().map{ s  =>
         val delta =  s._2.max - s._2.min
         (s._1 , delta)
-      }.filter(s => failure(s._2))
+      }.filter(s => addSleep(s._2))
       val output = deltaSnow.collect
+      //deltaSnow.saveAsTextFile("output.txt");
+      /*
+      for(each <- output) {
+        println(each);
+      }
+      */
 
+      /*
+      val writer = new PrintWriter(new File("output.txt"))
+      for(each <- output) {
+        writer.write(each);
+      }
+      writer.write(output)
+      writer.close()
+      */
       /** ************************
         * Time Logging
         * *************************/
@@ -111,7 +126,6 @@ object Weather {
 
       println("Job's DONE!")
       ctx.stop()
-    }
   }
 
   def convert_to_mm(s: String): Float = {
@@ -122,9 +136,14 @@ object Weather {
       case _ => return v * 304.8f
     }
   }
-  def failure(record:Float): Boolean ={
-    record > 6000f
+
+  def addSleep(record:Float): Boolean ={
+    if(record < 500f) {
+      Thread.sleep(500)
+    }
+    return true
   }
+
   def zipToState(str : String):String = {
     return (str.toInt % 50).toString
   }
