@@ -67,7 +67,7 @@ object InvertedIndexDDOnly {
         val content = s.substring(colonIndex + 1)
         val wordList = content.trim.split(" ")
         for (w <- wordList) {
-          Thread.sleep(5000)
+          Thread.sleep(500)
           wordDocList += Tuple2(w, docName)
         }
         wordDocList.toList
