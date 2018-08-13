@@ -37,7 +37,7 @@ object InvertedIndexDDOnly {
       if (args.length < 2) {
         sparkConf.setMaster("local[6]")
         sparkConf.setAppName("Inverted Index").set("spark.executor.memory", "2g")
-        logFile = "/home/ali/work/temp/git/lineageDelta/spark-lineage/examples/src/main/scala/org/apache/spark/examples/bigsift/benchmarks/invertedindex/data/inverted"
+        logFile = "wiki_file100096k"
       } else {
 
         logFile = args(0)
@@ -104,9 +104,9 @@ object InvertedIndexDDOnly {
       /** ************************
         * Time Logging
         * *************************/
-      val delta_debug = new DDNonExhaustive[String]
-      delta_debug.setMoveToLocalThreshold(local);
-      val returnedRDD = delta_debug.ddgen(lines, new Test, new SequentialSplit[String], lm, fh, DeltaDebuggingStartTime)
+      //val delta_debug = new DDNonExhaustive[String]
+      //delta_debug.setMoveToLocalThreshold(local);
+      //val returnedRDD = delta_debug.ddgen(lines, new Test, new SequentialSplit[String], lm, fh, DeltaDebuggingStartTime)
 
       /** ************************
         * Time Logging
