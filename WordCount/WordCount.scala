@@ -19,7 +19,7 @@ object WordCount {
       var local = 500
       if (args.length < 2) {
         sparkConf.setMaster("local[6]")
-        sparkConf.setAppName("TermVector_LineageDD").set("spark.executor.memory", "2g")
+        sparkConf.setAppName("WordCount").set("spark.executor.memory", "2g")
         logFile =  "C:/Users/19230/Downloads/wiki_file100096k"
       } else {
         logFile = args(0)
