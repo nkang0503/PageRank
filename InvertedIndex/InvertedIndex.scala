@@ -135,5 +135,6 @@ def filterSym(str:String): Boolean ={
         return false;
       }
     }
+    Thread.sleep(500)
     return true;
   }
