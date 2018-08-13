@@ -39,16 +39,15 @@ object InvertedIndexDDOnly {
         sparkConf.setAppName("Inverted Index").set("spark.executor.memory", "2g")
         logFile = "wiki_file100096k"
       } else {
-
         logFile = args(0)
         local = args(1).toInt
-
       }
       //set up lineage
       //var lineage = true
       //lineage = true
 
       val ctx = new SparkContext(sparkConf)
+     
       //start recording time for lineage
       /** ************************
         * Time Logging
@@ -59,6 +58,7 @@ object InvertedIndexDDOnly {
       /** ************************
         * Time Logging
         * *************************/
+     
       val lines = ctx.textFile(logFile, 1)
       val wordDoc = lines.flatMap(s => {
         val wordDocList: MutableList[(String, String)] = MutableList()
@@ -67,6 +67,7 @@ object InvertedIndexDDOnly {
         val content = s.substring(colonIndex + 1)
         val wordList = content.trim.split(" ")
         for (w <- wordList) {
+          Thread.sleep(5000)
           wordDocList += Tuple2(w, docName)
         }
         wordDocList.toList
@@ -135,6 +136,5 @@ def filterSym(str:String): Boolean ={
         return false;
       }
     }
-    Thread.sleep(500)
     return true;
   }
