@@ -36,16 +36,18 @@ object TermVectorDDOnly {
       if(args.length < 2) {
         sparkConf.setMaster("local[6]")
         sparkConf.setAppName("TermVector_LineageDD").set("spark.executor.memory", "2g")
-       logFile =  "/home/ali/work/temp/git/bigsift/src/benchmarks/termvector/data/textFile"
+       logFile =  "wiki_file100096k"
       }else{
         logFile = args(0)
         local  = args(1).toInt
       }
+      
       //set up lineage
       //var lineage = true
       //lineage = true
 
       val ctx = new SparkContext(sparkConf)
+      
       //start recording time for lineage
       /**************************
         Time Logging
@@ -56,6 +58,7 @@ object TermVectorDDOnly {
       /**************************
         Time Logging
         **************************/
+      
       val lines = ctx.textFile(logFile, 1)
       val wordDoc = lines
         .map(s => {
@@ -65,16 +68,19 @@ object TermVectorDDOnly {
         val content = s.substring(colonIndex + 1)
         val wordList = content.trim.split(" ")
         for (w <- wordList) {
-          if(TermVector.filterSym(w)){
+          if(filterSym(w)){
             if (wordFreqMap.contains(w)) {
+              Thread.sleep(500)
               val newCount = wordFreqMap(w) + 1
+              
               /**** Seeding Error***/
-              if (newCount > 10) {
-                wordFreqMap = wordFreqMap updated(w, 10000)
-              }
+              //if (newCount > 10) {
+              //  wordFreqMap = wordFreqMap updated(w, 10000)
+              //}
               /*********************/
-              else
-                wordFreqMap = wordFreqMap updated(w, newCount)
+              //else
+             
+              wordFreqMap = wordFreqMap updated(w, newCount)
             } else {
               wordFreqMap = wordFreqMap + (w -> 1)
             }
@@ -99,7 +105,7 @@ object TermVectorDDOnly {
           }
         }
         map
-      }.filter(s => TermVector.failure(s._2))
+      }//.filter(s => failure(s._2))
       val out = wordDoc.collect()
 
       /**************************
